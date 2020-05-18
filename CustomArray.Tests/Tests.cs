@@ -10,6 +10,7 @@ namespace CustomArray.Tests
         public void Pass()
         {
             Assert.Pass();
+
         }
     }
 }
