@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CustomArray
 {
@@ -9,36 +10,43 @@ namespace CustomArray
         /// <summary>
         /// Should return first index of array
         /// </summary>
-        public int First 
-        { 
-            get=> throw new NotImplementedException();
-            private set=>throw new NotImplementedException() ;
+        public int First
+        {
+            get;
+            private set;
         }
 
         /// <summary>
         /// Should return last index of array
         /// </summary>
-        public int Last 
-        { 
-            get=> throw new NotImplementedException(); 
+        public int Last
+        {
+            get { return (Length + First - 1); }
         }
 
         /// <summary>
         /// Should return length of array
         /// <exception cref="ArgumentException">Thrown when value was smaller than 0</exception>
         /// </summary>
-        public int Length 
-        {   
-            get=>throw new NotImplementedException(); 
-            private set=> throw new NotImplementedException();
+        public int Length
+        {
+            get
+            {
+                return Array.Length;
+            }
+            private set
+            {
+                if (value <= 0)
+                    throw new ArgumentException();
+            }
         }
 
         /// <summary>
         /// Should return array 
         /// </summary>
         public T[] Array
-        { 
-            get=>throw new NotImplementedException(); 
+        {
+            get;
         }
 
 
@@ -49,7 +57,9 @@ namespace CustomArray
         /// <param name="length">Length</param>         
         public CustomArray(int first, int length)
         {
-            throw new NotImplementedException();
+            First = first;
+            Length = length;
+            Array = new T[length];
         }
 
 
@@ -62,7 +72,13 @@ namespace CustomArray
         /// <exception cref="ArgumentException">Thrown when count is smaler than 0</exception>
         public CustomArray(int first, IEnumerable<T> list)
         {
-            throw new NotImplementedException();
+            if (list == null)
+                throw new NullReferenceException();
+            if (list.Count() <= 0)
+                throw new ArgumentException();
+            First = first;
+            Length = list.Count();
+            Array = list.ToArray();
         }
 
         /// <summary>
@@ -74,7 +90,13 @@ namespace CustomArray
         /// <exception cref="ArgumentException">Thrown when list without elements </exception>
         public CustomArray(int first, params T[] list)
         {
-            throw new NotImplementedException();
+            if (list == null)
+                throw new ArgumentNullException();
+            if (list.Count() <= 0)
+                throw new ArgumentException();
+            First = first;
+            Length = list.Length;
+            Array = list;
         }
 
         /// <summary>
@@ -88,22 +110,28 @@ namespace CustomArray
         {
             get
             {
-                throw new NotImplementedException();
+                if (item < First || item > Last)
+                    throw new ArgumentException();
+                return Array[item - First];
             }
             set
             {
-                throw new NotImplementedException();
+                if (value == null)
+                    throw new ArgumentNullException();
+                if (item < First || item > Last)
+                    throw new ArgumentException();
+                Array[item - First] = value;
             }
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return Array.ToList().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
     }
 }
